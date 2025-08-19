@@ -6,9 +6,7 @@
 #include <stdlib.h>
 
 int main(void) {
-    struct timespec next_tick;
-    clock_gettime(CLOCK_MONOTONIC, &next_tick); // monotonic avoids jumps
-
+    clock_t next_tick = clock();
     while(1) {
         struct timeval tv; // give you tv.tv_sec (seconds since 1970) and tv.tv_usec (microseconds since the last second)
 
@@ -35,9 +33,6 @@ int main(void) {
         int dec_min = remainder / 100;
         int dec_sec = remainder % 100;
 
-        // decimal milliseconds from fractional part
-        int dec_msec = (int)((decimal_total - (int)decimal_total) * 1000);
-
         printf("  %02d-%02d-%d %02d:%02d:%02d %02d:%02d:%02d\r", 
             local->tm_mday, local->tm_mon + 1, local->tm_year + 1900, 
             local->tm_hour, local->tm_min, local->tm_sec,
@@ -45,21 +40,8 @@ int main(void) {
         
         fflush(stdout);
 
-        // sleep until next_tick
-        struct timespec now;
-        clock_gettime(CLOCK_MONOTONIC, &now);
-
-        long sec_diff = next_tick.tv_sec - now.tv_sec;
-        long nsec_diff = next_tick.tv_nsec - now.tv_nsec;
-        if (nsec_diff < 0) {
-            sec_diff -= 1;
-            nsec_diff += 1000000000L;
-        }
-
-        if (sec_diff > 0 || (sec_diff == 0 && nsec_diff > 0)) {
-            struct timespec sleep_time = {sec_diff, nsec_diff};
-            nanosleep(&sleep_time, NULL);
-        }
+        next_tick += CLOCKS_PER_SEC / 10; // 1000ms
+        while(clock() < next_tick); // wait
     }
 
     return 0;
