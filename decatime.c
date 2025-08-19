@@ -1,5 +1,9 @@
+#define _POSIX_C_SOURCE 199309L
 #include <stdio.h>
+#include <time.h>
 #include <sys/time.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 int main(void) {
     struct timespec next_tick;
