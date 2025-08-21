@@ -1,9 +1,9 @@
 # Makefile for workingtime.exe with .o files
 
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
-TARGET = decatime
-SRC = decatime.c
+CFLAGS = -Wall -Wextra -O2 -static
+TARGET = reltime
+SRC = reltimee.c
 OBJ = $(SRC:.c=.o)
 
 all: $(TARGET)
