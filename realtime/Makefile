@@ -2,8 +2,8 @@
 
 CC = gcc
 CFLAGS = -Wall -Wextra -O2 -static
-TARGET = reltime
-SRC = reltimee.c
+TARGET = realtime
+SRC = realtime.c
 OBJ = $(SRC:.c=.o)
 
 all: $(TARGET)
